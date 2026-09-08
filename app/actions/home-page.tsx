@@ -17,7 +17,17 @@ const ORGANIZATION_ID = (import.meta as ImportMeta & { env?: Record<string, stri
 
 const CookieConsentBanner = clientEntry(import.meta.url, function CookieConsentBanner() {
   const gtmId = (import.meta as ImportMeta & { env?: Record<string, string | undefined> }).env?.VITE_GTM_ID
-  void import('vanilla-cookieconsent').then((consent) => {
+  void import('vanilla-cookieconsent').then(async (consent) => {
+    let required = true
+    try {
+      const geoUrl = window.location.hostname.includes('qrati.com')
+        ? '/api/cookie-consent-geo'
+        : 'https://qrati.com/api/cookie-consent-geo'
+      const response = await fetch(geoUrl, { cache: 'no-store' })
+      required = (await response.json() as { required: boolean }).required
+    } catch {
+      required = true
+    }
     const syncGtm = () => {
       const analytics = consent.acceptedCategory('analytics')
       window.dataLayer = window.dataLayer || []
@@ -31,14 +41,13 @@ const CookieConsentBanner = clientEntry(import.meta.url, function CookieConsentB
       script.src = `https://www.googletagmanager.com/gtm.js?id=${encodeURIComponent(gtmId)}`
       document.head.appendChild(script)
     }
-    void consent.run({ categories: { necessary: { enabled: true, readOnly: true }, analytics: {} }, onFirstConsent: syncGtm, onConsent: syncGtm, onChange: syncGtm, language: { default: 'en', translations: { en: { consentModal: { title: 'We use cookies', description: 'Essential cookies keep this example working. Analytics cookies are optional.', acceptAllBtn: 'Accept all', acceptNecessaryBtn: 'Reject analytics', showPreferencesBtn: 'Manage preferences' }, preferencesModal: { title: 'Cookie preferences', acceptAllBtn: 'Accept all', acceptNecessaryBtn: 'Reject analytics', savePreferencesBtn: 'Save preferences', closeIconLabel: 'Close', sections: [] } } } } })
+    void consent.run({ mode: required ? 'opt-in' : 'opt-out', autoShow: required, categories: { necessary: { enabled: true, readOnly: true }, analytics: {} }, onFirstConsent: syncGtm, onConsent: syncGtm, onChange: syncGtm, language: { default: 'en', translations: { en: { consentModal: { title: 'We use cookies', description: 'Essential cookies keep this example working. Analytics cookies are optional.', acceptAllBtn: 'Accept all', acceptNecessaryBtn: 'Reject analytics', showPreferencesBtn: 'Manage preferences' }, preferencesModal: { title: 'Cookie preferences', acceptAllBtn: 'Accept all', acceptNecessaryBtn: 'Reject analytics', savePreferencesBtn: 'Save preferences', closeIconLabel: 'Close', sections: [] } } } } })
   })
   return () => null
 })
 
 const ThemeButton = clientEntry(import.meta.url, function ThemeButton(handle: Handle<{}>) {
   let dark = typeof localStorage !== 'undefined' && localStorage.getItem('qc-theme') === 'dark'
-  void import('vanilla-cookieconsent').then(({ run }) => run({ categories: { necessary: { enabled: true, readOnly: true }, analytics: {} }, language: { default: 'en', translations: { en: { consentModal: { title: 'Cookie preferences', description: 'Essential cookies keep this example working.', acceptAllBtn: 'Accept all', acceptNecessaryBtn: 'Reject analytics', showPreferencesBtn: 'Manage preferences' }, preferencesModal: { title: 'Cookie preferences', acceptAllBtn: 'Accept all', acceptNecessaryBtn: 'Reject analytics', savePreferencesBtn: 'Save preferences', closeIconLabel: 'Close', sections: [] } } } } }))
   return () => <button type="button" mix={[css({ position: 'fixed', top: '16px', right: '16px', zIndex: 2, padding: '8px 14px', borderRadius: '999px', border: '1px solid #8886', background: '#8883', cursor: 'pointer' }), on('click', async () => { dark = !dark; document.documentElement.dataset.theme = dark ? 'dark' : 'light'; document.documentElement.classList.toggle('dark', dark); localStorage.setItem('qc-theme', dark ? 'dark' : 'light'); document.querySelector('qrati-connect')?.setAttribute('theme', dark ? 'dark' : 'light'); await handle.update() })]}>🌙 Theme</button>
 })
 
