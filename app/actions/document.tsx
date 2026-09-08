@@ -21,7 +21,7 @@ export function Document(handle: Handle<DocumentProps>) {
           <meta charSet="utf-8" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <meta name="color-scheme" content="light dark" />
-          <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+          <link rel="icon" type="image/svg+xml" href="./qrati-logo-square.svg" />
           <link rel="stylesheet" href="/styles.css" />
           <title>{title}</title>
           {head}
