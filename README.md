@@ -1,6 +1,15 @@
-# Qrati Connect Remix Example
+# Qrati Connect — Remix Example
 
-A minimal Remix application starter with a home page.
+[![Qrati Connect — embeddable event photo galleries](public/qrati-connect-og.png)](https://qrati.com/connect)
+
+Embed a live event photo gallery in Remix with guest uploads, full-screen lightbox, emoji reactions, and photo-contest leaderboards. [Explore Qrati Connect](https://qrati.com/connect) or [view the live Remix example](https://qrati.com/connect/remix-example).
+
+## What this demonstrates
+
+- Immediate `<qrati-connect>` rendering with no authentication gate.
+- Remix UI client entry for host-controlled light/dark theme synchronization.
+- Cookie consent with `vanilla-cookieconsent`.
+- A framework-agnostic web component that works in server-rendered applications.
 
 ## Starter Shape
 
@@ -12,20 +21,29 @@ A minimal Remix application starter with a home page.
 - `app/assets.ts` owns the server-side asset pipeline used by the asset route and render middleware.
 - Root `public/` contains static files served unchanged from the app root.
 
-## Growing The App
+## Run locally
 
-- Put top-level route actions in `app/actions/controller.tsx`.
-- Add `app/actions/<route-key>/controller.tsx` when a nested route map needs its own actions or middleware.
-- Add directories like `app/data/` or `test/` when the app actually needs them.
-- Move shared UI into `app/ui/` once more than one route needs it.
-
-## Commands
-
-```sh
-npm i
-npm run dev
-npm run hmr
-npm run start
-npm test
-npm run typecheck
+```bash
+pnpm install
+pnpm dev
 ```
+
+Type-check the example:
+
+```bash
+pnpm typecheck
+```
+
+The widget is rendered by `app/actions/home-page.tsx` and uses organization ID `69ad9c7876d8bf6f864b3a65` by default.
+
+## Integration
+
+```tsx
+<qrati-connect
+  organization-id="69ad9c7876d8bf6f864b3a65"
+  theme="light"
+  router="hash"
+/>
+```
+
+Learn more in the [Qrati Connect documentation and examples](https://qrati.com/connect).
