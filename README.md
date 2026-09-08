@@ -34,13 +34,13 @@ Type-check the example:
 pnpm typecheck
 ```
 
-The widget is rendered by `app/actions/home-page.tsx` and uses organization ID `69ad9c7876d8bf6f864b3a65` by default.
+The widget is rendered by `app/actions/home-page.tsx` and reads its organization ID from `VITE_ORGANIZATION_ID`.
 
 ## Integration
 
 ```tsx
 <qrati-connect
-  organization-id="69ad9c7876d8bf6f864b3a65"
+  organization-id="${VITE_ORGANIZATION_ID}"
   theme="light"
   router="hash"
 />
