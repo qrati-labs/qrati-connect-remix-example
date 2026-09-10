@@ -74,7 +74,7 @@ function HomeHead() {
       <meta property="og:description" content="A complete live event-media experience for Remix sites." />
       <meta property="og:url" content="https://qrati.com/connect/remix-example" />
       <meta property="og:image" content="https://qrati.com/connect/remix-example/qrati-connect-og.png" />
-      <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+      <script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@qratilabs/qrati-connect/element/styles.css" />
       <script type="module" src="https://cdn.jsdelivr.net/npm/@qratilabs/qrati-connect/element/web.es.js"></script>
       <link rel="preconnect" href="https://fonts.googleapis.com" />
