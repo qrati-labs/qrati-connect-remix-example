@@ -7,11 +7,18 @@ const port = process.env.PORT ? Number.parseInt(process.env.PORT, 10) : 44100
 const hmrProxyPort = process.env.HMR_PROXY_PORT
   ? Number.parseInt(process.env.HMR_PROXY_PORT, 10)
   : null
+const basePath = '/connect/remix-example'
 
 const server = http.createServer(
   createRequestListener(async (request) => {
     try {
-      return await router.fetch(request)
+      const url = new URL(request.url)
+      if (url.pathname === basePath || url.pathname === `${basePath}/`) {
+        url.pathname = '/'
+      } else if (url.pathname.startsWith(`${basePath}/`)) {
+        url.pathname = url.pathname.slice(basePath.length) || '/'
+      }
+      return await router.fetch(new Request(url, request))
     } catch (error) {
       if (!(request.signal.aborted && error === request.signal.reason)) {
         console.error(error)

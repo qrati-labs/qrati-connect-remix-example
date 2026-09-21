@@ -3,6 +3,8 @@ import { css } from 'remix/ui'
 
 import { entryHref, entryPreloads } from '../assets.ts'
 
+const BASE_PATH = '/connect/remix-example'
+
 export interface DocumentProps {
   children?: RemixNode
   head?: RemixNode
@@ -21,8 +23,8 @@ export function Document(handle: Handle<DocumentProps>) {
           <meta charSet="utf-8" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <meta name="color-scheme" content="light dark" />
-          <link rel="icon" type="image/svg+xml" href="./qrati-logo-square.svg" />
-          <link rel="stylesheet" href="/styles.css" />
+          <link rel="icon" type="image/svg+xml" href={`${BASE_PATH}/qrati-logo-square.svg`} />
+          <link rel="stylesheet" href={`${BASE_PATH}/styles.css`} />
           <title>{title}</title>
           {head}
           {entryPreloads.map((href) => (
